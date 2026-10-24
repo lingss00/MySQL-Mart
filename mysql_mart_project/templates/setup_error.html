@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Database setup needed{% endblock %}
+{% block heading %}Database setup needed{% endblock %}
+{% block content %}
+<section class="panel setup-panel"><span class="eyebrow">CONNECTION CHECK</span><h1>Could not connect to MySQL</h1><p>The website is running, but it could not read the database. Check that MySQL Server is running, execute <code>schema.sql</code> in Workbench, and confirm your username and password.</p><details><summary>Technical error</summary><pre>{{ error }}</pre></details><a class="btn primary" href="{{ url_for('index') }}">Try again</a></section>
+{% endblock %}

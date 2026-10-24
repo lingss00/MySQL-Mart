@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}MySQL Notes{% endblock %}
+{% block heading %}MySQL Notes{% endblock %}
+{% block content %}
+<div class="page-intro"><div><span class="eyebrow">QUICK REVISION</span><h1>MySQL essentials</h1><p>Core database concepts used in this project.</p></div></div>
+<div class="notes-grid">
+<article class="note-card"><span class="note-number">01 / BASICS</span><h2>What is MySQL?</h2><p>MySQL is a relational database management system (RDBMS). It stores data in tables made up of rows and columns and uses SQL to work with that data.</p></article>
+<article class="note-card"><span class="note-number">02 / KEYS</span><h2>Primary & foreign keys</h2><p>A primary key uniquely identifies a row. A foreign key links a column in one table to a key in another table and helps preserve referential integrity.</p></article>
+<article class="note-card"><span class="note-number">03 / RETRIEVE</span><h2>SELECT and WHERE</h2><pre><code>SELECT product_name, price
+FROM products
+WHERE price &lt; 2000
+ORDER BY price;</code></pre><p>SELECT retrieves columns, WHERE filters rows, and ORDER BY sorts the results.</p></article>
+<article class="note-card"><span class="note-number">04 / CHANGE DATA</span><h2>INSERT, UPDATE, DELETE</h2><pre><code>INSERT INTO products
+(product_name, category, price, stock)
+VALUES ('USB Cable', 'Accessories', 250, 15);
+
+UPDATE products SET stock = 20
+WHERE product_id = 1;
+
+DELETE FROM products WHERE product_id = 9;</code></pre><p>Always use a WHERE condition with UPDATE or DELETE when you intend to change only selected records.</p></article>
+<article class="note-card"><span class="note-number">05 / SUMMARY</span><h2>Aggregate functions</h2><pre><code>SELECT COUNT(*) FROM products;
+SELECT AVG(price) FROM products;
+SELECT MAX(price) FROM products;
+SELECT SUM(stock) FROM products;</code></pre><p>COUNT, AVG, MAX, MIN and SUM calculate summaries over a set of rows.</p></article>
+<article class="note-card"><span class="note-number">06 / CONNECT</span><h2>How this website works</h2><p>HTML displays forms and tables. Flask receives requests and runs Python code. The MySQL connector sends SQL queries to MySQL, and the returned records are displayed in the browser.</p><div class="flow-chips"><span>Chrome</span><b>→</b><span>Flask</span><b>→</b><span>MySQL</span></div></article>
+</div>
+{% endblock %}

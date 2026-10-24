@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}MySQL Mart{% endblock %} | MySQL Mart</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-icon">M</span><span>MySQL<span class="brand-accent">Mart</span><small>CLASS 12 CS PROJECT</small></span></a>
+    <div class="nav-label">WORKSPACE</div>
+    <nav>
+      <a class="{% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">▦ <span>Dashboard</span></a>
+      <a class="{% if request.endpoint == 'products' %}active{% endif %}" href="{{ url_for('products') }}">▣ <span>Products</span></a>
+      <a class="{% if request.endpoint == 'orders' %}active{% endif %}" href="{{ url_for('orders') }}">🛍 <span>Orders</span></a>
+      <a class="{% if request.endpoint == 'notes' %}active{% endif %}" href="{{ url_for('notes') }}">▤ <span>MySQL Notes</span></a>
+      <a class="{% if request.endpoint == 'quiz' %}active{% endif %}" href="{{ url_for('quiz') }}">✓ <span>SQL Quiz</span></a>
+    </nav>
+    <div class="sidebar-bottom"><span class="status-dot"></span> Database project <small>Local demo environment</small></div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div><span class="eyebrow">COMPUTER SCIENCE / MYSQL</span><div class="page-heading">{% block heading %}Dashboard{% endblock %}</div></div>
+      <div class="top-right"><span class="online-dot"></span> MySQL learning workspace</div>
+    </header>
+    <section class="content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+      <footer>MySQL Mart <span>•</span> Class 12 Computer Science Project</footer>
+    </section>
+  </main>
+</body>
+</html>

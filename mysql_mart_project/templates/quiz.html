@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}SQL Quiz{% endblock %}
+{% block heading %}SQL Quiz{% endblock %}
+{% block content %}
+<div class="page-intro"><div><span class="eyebrow">KNOWLEDGE CHECK</span><h1>Test your SQL basics</h1><p>Five quick questions to practise your database concepts.</p></div></div>
+{% if result %}<div class="score-banner"><div><span class="eyebrow">YOUR RESULT</span><h2>You scored {{ result.score }} / {{ result.total }}</h2><p>{% if result.score == result.total %}Perfect score — excellent work!{% elif result.score >= 3 %}Good work. Review the explanations below to improve further.{% else %}Keep practising. Read the notes and try again.{% endif %}</p></div><a class="btn secondary" href="{{ url_for('quiz') }}">Try again ↻</a></div>{% endif %}
+<form method="post" class="quiz-form">
+{% for q in questions %}{% set qi = loop.index0 %}<section class="panel question-card"><span class="question-number">QUESTION {{ loop.index }} / {{ questions|length }}</span><h2>{{ q.q }}</h2><div class="options">{% for option in q.options %}<label class="option"><input type="radio" name="q{{ qi }}" value="{{ option }}" {% if result and result.answers[qi] == option %}checked{% endif %} required> {{ option }}</label>{% endfor %}</div>
+{% if result %}<div class="explanation"><b>Correct answer: {{ q.answer }}</b><p>{{ q.explain }}</p></div>{% endif %}</section>{% endfor %}
+<button class="btn primary" type="submit">Submit answers →</button>
+</form>
+{% endblock %}

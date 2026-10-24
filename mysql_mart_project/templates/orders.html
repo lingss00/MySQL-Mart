@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Orders{% endblock %}
+{% block heading %}Orders{% endblock %}
+{% block content %}
+<div class="page-intro"><div><span class="eyebrow">SALES MANAGEMENT</span><h1>Orders & purchases</h1><p>Place a test order and watch the database update product stock.</p></div></div>
+<div class="order-layout">
+<section class="panel"><div class="panel-heading"><div><span class="eyebrow">ORDER HISTORY</span><h2>Recorded orders</h2></div><span class="count-chip">{{ orders|length }} total</span></div>
+<div class="table-wrap"><table><thead><tr><th>ORDER</th><th>CUSTOMER</th><th>ITEM</th><th>QTY</th><th>TOTAL</th><th>DATE</th><th>STATUS</th></tr></thead><tbody>
+{% for o in orders %}<tr><td class="mono">#{{ o.order_id }}</td><td>{{ o.customer_name }}</td><td>{{ o.product_name }}</td><td>{{ o.quantity }}</td><td>₹{{ "%.2f"|format(o.total_amount) }}</td><td>{{ o.order_date.strftime('%d %b %Y') if o.order_date else '' }}</td><td><span class="badge">{{ o.status }}</span></td></tr>
+{% else %}<tr><td colspan="7" class="empty">No orders recorded yet.</td></tr>{% endfor %}
+</tbody></table></div></section>
+<section class="panel add-panel"><span class="eyebrow">CHECKOUT DEMO</span><h2>Place an order</h2><p class="muted">The order is saved in MySQL and stock is reduced in the same transaction.</p>
+<form method="post" action="{{ url_for('place_order') }}" class="stack-form">
+<label>Customer name<input name="customer_name" placeholder="Enter customer name" required maxlength="100"></label>
+<label>Product ID<input name="product_id" type="number" min="1" placeholder="Find ID on Products page" required></label>
+<label>Quantity<input name="quantity" type="number" min="1" value="1" required></label>
+<button class="btn primary full" type="submit">Place order ↗</button>
+</form><div class="hint"><b>Database operations</b><br><code>INSERT</code> order + <code>UPDATE</code> stock<br><small>If stock is insufficient, the order is cancelled.</small></div></section>
+</div>
+{% endblock %}

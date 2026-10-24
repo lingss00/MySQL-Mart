@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Products{% endblock %}
+{% block heading %}Products{% endblock %}
+{% block content %}
+<div class="page-intro"><div><span class="eyebrow">CATALOGUE MANAGEMENT</span><h1>Your product catalogue</h1><p>Products shown here are loaded from your MySQL database.</p></div><span class="count-chip">{{ products|length }} products shown</span></div>
+<div class="product-layout">
+<section class="panel"><div class="panel-heading"><div><span class="eyebrow">INVENTORY</span><h2>All products</h2></div></div>
+<form class="searchbar" method="get" action="{{ url_for('products') }}"><input name="q" value="{{ search }}" placeholder="Search by product or category…"><button class="btn primary" type="submit">Search</button>{% if search %}<a class="btn secondary" href="{{ url_for('products') }}">Clear</a>{% endif %}</form>
+<div class="table-wrap"><table><thead><tr><th>PRODUCT</th><th>CATEGORY</th><th>PRICE</th><th>STOCK</th><th>UPDATE</th><th></th></tr></thead><tbody>
+{% for p in products %}<tr><td><b>{{ p.product_name }}</b><small class="table-sub">ID #{{ p.product_id }}</small></td><td><span class="category">{{ p.category }}</span></td><td>₹{{ "%.2f"|format(p.price) }}</td><td><span class="{% if p.stock < 5 %}low-stock{% else %}stock{% endif %}">{{ p.stock }}</span></td><td><form class="inline-edit" method="post" action="{{ url_for('update_product', product_id=p.product_id) }}"><input aria-label="Price" name="price" type="number" min="0" step="0.01" value="{{ p.price }}" required><input aria-label="Stock" name="stock" type="number" min="0" value="{{ p.stock }}" required><button class="mini-btn" title="Save update">Save</button></form></td><td><form method="post" action="{{ url_for('delete_product', product_id=p.product_id) }}" onsubmit="return confirm('Delete this product? Products linked to orders cannot be deleted.');"><button class="delete-btn" title="Delete product">×</button></form></td></tr>
+{% else %}<tr><td colspan="6" class="empty">No products found. Add one using the form.</td></tr>{% endfor %}
+</tbody></table></div>
+</section>
+<section class="panel add-panel"><span class="eyebrow">NEW INVENTORY</span><h2>Add a product</h2><p class="muted">This form inserts a new row into MySQL.</p>
+<form method="post" action="{{ url_for('add_product') }}" class="stack-form">
+<label>Product name<input name="product_name" placeholder="e.g. USB-C Cable" required maxlength="100"></label>
+<label>Category<input name="category" placeholder="e.g. Accessories" required maxlength="50"></label>
+<label>Price (₹)<input name="price" type="number" min="0" step="0.01" placeholder="499.00" required></label>
+<label>Stock quantity<input name="stock" type="number" min="0" step="1" placeholder="20" required></label>
+<button class="btn primary full" type="submit">＋ Add product to database</button></form>
+<div class="hint"><b>SQL concept</b><br><code>INSERT INTO products (...)</code><br><small>The backend uses parameterized queries to send form data safely.</small></div>
+</section></div>
+{% endblock %}
